@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { menuItemInterface } from "../../../../Interfaces";
 import MenuItemCard from "./MenuItemCard";
 import { useGetMenuItemsQuery } from "../../../../Apis/menuItemApi";
-import { useDispatch, UseDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setMenuItem } from "../../../../Storage/Redux/menuItemSlice";
 
 function MenuItemList() {
-  //const [menuItems, setMenuItems] = useState<menuItemInterface[]>([]);
-
   const { data, isLoading } = useGetMenuItemsQuery(null);
   const dispath = useDispatch();
 
