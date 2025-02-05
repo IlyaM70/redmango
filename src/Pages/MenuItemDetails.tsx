@@ -31,9 +31,6 @@ function MenuItemDetails() {
       updateQuantityBy: quantity,
       userId: "4ab04538-5903-4a34-9964-3d69d98700ca",
     });
-
-    console.log(response);
-
     setIsAddingToCart(false);
   };
 

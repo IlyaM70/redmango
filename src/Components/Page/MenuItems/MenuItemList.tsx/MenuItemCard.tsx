@@ -1,12 +1,28 @@
-import React from "react";
+import { useState } from "react";
 import { menuItemInterface } from "../../../../Interfaces";
 import { Link } from "react-router-dom";
+import { useUpdateShoppingCartMutation } from "../../../../Apis/shoppingCartApi";
+import { MiniLoader } from "../../Common";
 
 interface Props {
   menuItem: menuItemInterface;
 }
 
 function MenuItemCard(props: Props) {
+  const [isAddingtoCart, setIsAddingToCart] = useState<boolean>(false);
+  const [updateShoppingCart] = useUpdateShoppingCartMutation();
+
+  const hadnleAddToCart = async (menuItemId: number) => {
+    setIsAddingToCart(true);
+
+    const response = await updateShoppingCart({
+      menuItemId: menuItemId,
+      updateQuantityBy: 1,
+      userId: "4ab04538-5903-4a34-9964-3d69d98700ca",
+    });
+    setIsAddingToCart(false);
+  };
+
   return (
     <div className="col-md-4 col-12 p-4">
       <div
@@ -41,19 +57,25 @@ function MenuItemCard(props: Props) {
                 &nbsp; {props.menuItem.specialTag}
               </i>
             )}
-
-          <i
-            className="bi bi-cart-plus btn btn-outline-danger"
-            style={{
-              position: "absolute",
-              top: "15px",
-              right: "15px",
-              padding: "5px 10px",
-              borderRadius: "3px",
-              outline: "none !important",
-              cursor: "pointer",
-            }}
-          ></i>
+          {isAddingtoCart ? (
+            <div style={{ position: "absolute", top: "15px", right: "15px" }}>
+              <MiniLoader />
+            </div>
+          ) : (
+            <i
+              className="bi bi-cart-plus btn btn-outline-danger"
+              style={{
+                position: "absolute",
+                top: "15px",
+                right: "15px",
+                padding: "5px 10px",
+                borderRadius: "3px",
+                outline: "none !important",
+                cursor: "pointer",
+              }}
+              onClick={() => hadnleAddToCart(props.menuItem.id)}
+            ></i>
+          )}
 
           <div className="text-center">
             <p className="card-title m-0 text-success fs-3">
