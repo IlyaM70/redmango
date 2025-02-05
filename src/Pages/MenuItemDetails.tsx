@@ -3,6 +3,7 @@ import { useGetMenuItemByIdQuery } from "../Apis/menuItemApi";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useUpdateShoppingCartMutation } from "../Apis/shoppingCartApi";
+import { MainLoader } from "../Components/Page/Common";
 
 //user id 4ab04538-5903-4a34-9964-3d69d98700ca
 
@@ -106,7 +107,9 @@ function MenuItemDetails() {
           </div>
         </div>
       ) : (
-        <div className="d-flex justify-content-center w-100">Loading...</div>
+        <div className="d-flex justify-content-center w-100">
+          <MainLoader />
+        </div>
       )}
     </div>
   );
