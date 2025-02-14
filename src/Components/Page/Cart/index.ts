@@ -1,2 +1,3 @@
 import CartSummary from "./CartSummary";
-export { CartSummary };
+import CartPickUpDetails from "./CartPickUpDetails";
+export { CartSummary, CartPickUpDetails };
