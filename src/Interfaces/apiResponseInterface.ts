@@ -3,7 +3,7 @@ export default interface apiResponseInterface {
     statusCode?: number;
     isSuccess?: boolean;
     errorMessages?: Array<string>;
-    result?: {
+    result: {
       // this will not give you suggestions
       [key: string]: string;
     };
