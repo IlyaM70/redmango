@@ -1,9 +1,13 @@
 import React from "react";
 import logo from "../../Assests/Images/mango.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { cartItemInterface, userInterface } from "../../Interfaces";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../Storage/Redux/store";
+import {
+  emptyUserState,
+  setLoggedInUser,
+} from "../../Storage/Redux/userAuthSlice";
 
 function Header() {
   const shoppingCartFromStore: cartItemInterface[] = useSelector(
@@ -13,6 +17,15 @@ function Header() {
   const userData: userInterface = useSelector(
     (state: RootState) => state.userAuthStore
   );
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatch(setLoggedInUser({ ...emptyUserState }));
+    navigate("/");
+  };
 
   return (
     <div>
@@ -97,6 +110,7 @@ function Header() {
                     </li>
                     <li className="nav-item">
                       <button
+                        onClick={handleLogout}
                         className="btn btn-success btn-outlined rounded-pill text-white mx-2"
                         style={{
                           border: "none",

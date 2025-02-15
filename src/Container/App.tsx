@@ -13,12 +13,23 @@ import {
 import { Routes, Route } from "react-router-dom";
 import { useGetShoppingCartQuery } from "../Apis/shoppingCartApi";
 import { setShoppingCart } from "../Storage/Redux/shoppingCartSlice";
+import { userInterface } from "../Interfaces";
+import { jwtDecode } from "jwt-decode";
+import { setLoggedInUser } from "../Storage/Redux/userAuthSlice";
 
 function App() {
   const dispatch = useDispatch();
   const { data, isLoading } = useGetShoppingCartQuery(
     "4ab04538-5903-4a34-9964-3d69d98700ca"
   );
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const { fullName, id, email, role }: userInterface = jwtDecode(token);
+      dispatch(setLoggedInUser({ fullName, id, email, role }));
+    }
+  }, []);
 
   useEffect(() => {
     if (!isLoading) {
