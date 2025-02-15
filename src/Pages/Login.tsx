@@ -1,14 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { inputHelper } from "../Helper";
 import { apiResponseInterface, userInterface } from "../Interfaces";
 import { useLoginUserMutation } from "../Apis/authApi";
 import { useDispatch } from "react-redux";
 import { setLoggedInUser } from "../Storage/Redux/userAuthSlice";
+import { MainLoader } from "../Components/Page/Common";
 function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [userInput, setUserInput] = useState({
     userName: "",
@@ -35,6 +38,7 @@ function Login() {
       const { fullName, id, email, role }: userInterface = jwtDecode(token);
       localStorage.setItem("token", token);
       dispatch(setLoggedInUser({ fullName, id, email, role }));
+      navigate("/");
     } else if (response.error) {
       console.log(response.error.data.errorMessages[0]);
       setError(response.error.data.errorMessages[0]);
@@ -44,6 +48,7 @@ function Login() {
 
   return (
     <div className="container text-center">
+      {loading && <MainLoader />}
       <form method="post" onSubmit={handleSubmit}>
         <h1 className="mt-5">Login</h1>
         <div className="mt-5">
