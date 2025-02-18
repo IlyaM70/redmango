@@ -3,6 +3,7 @@ import { menuItemInterface } from "../../../../Interfaces";
 import { Link } from "react-router-dom";
 import { useUpdateShoppingCartMutation } from "../../../../Apis/shoppingCartApi";
 import { MiniLoader } from "../../Common";
+import { toastNotify } from "../../../../Helper";
 
 interface Props {
   menuItem: menuItemInterface;
@@ -20,6 +21,9 @@ function MenuItemCard(props: Props) {
       updateQuantityBy: 1,
       userId: "4ab04538-5903-4a34-9964-3d69d98700ca",
     });
+    if (response.data && response.data.isSuccess) {
+      toastNotify("Item added to cart");
+    }
     setIsAddingToCart(false);
   };
 

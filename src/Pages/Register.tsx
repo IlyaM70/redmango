@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { SD_Roles } from "../Utility/SD";
-import { inputHelper } from "../Helper";
+import { inputHelper, toastNotify } from "../Helper";
 import { useRegisterUserMutation } from "../Apis/authApi";
 import { apiResponseInterface } from "../Interfaces";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [registerUser] = useRegisterUserMutation();
@@ -13,6 +14,7 @@ function Register() {
     name: "",
     role: "",
   });
+  const navigate = useNavigate();
   const handleUserInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -29,9 +31,10 @@ function Register() {
       role: userInput.role,
     });
     if (response.data) {
-      console.log(response.data);
+      toastNotify("Registration successful!Please login to continue");
+      navigate("/login");
     } else if (response.error) {
-      console.log(response.error.data.errorMessages[0]);
+      toastNotify(response.error.data.errorMessages[0], "error");
     }
     setLoading(false);
   };

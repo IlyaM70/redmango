@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useUpdateShoppingCartMutation } from "../Apis/shoppingCartApi";
 import { MainLoader, MiniLoader } from "../Components/Page/Common";
+import { toastNotify } from "../Helper";
 
 //user id 4ab04538-5903-4a34-9964-3d69d98700ca
 
@@ -32,6 +33,9 @@ function MenuItemDetails() {
       updateQuantityBy: quantity,
       userId: "4ab04538-5903-4a34-9964-3d69d98700ca",
     });
+    if (response.data && response.data.isSuccess) {
+      toastNotify("Item added to cart");
+    }
     setIsAddingToCart(false);
   };
 
