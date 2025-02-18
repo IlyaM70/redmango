@@ -5,7 +5,6 @@ const withAuth = (Component: React.ComponentType) => {
     const accessToken = localStorage.getItem("token");
     if (!accessToken) {
       return <Navigate to="/login" />;
-      return null;
     }
     return <Component {...props} />;
   };
