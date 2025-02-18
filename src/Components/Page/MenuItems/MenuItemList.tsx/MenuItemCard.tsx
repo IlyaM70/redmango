@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { menuItemInterface } from "../../../../Interfaces";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUpdateShoppingCartMutation } from "../../../../Apis/shoppingCartApi";
 import { MiniLoader } from "../../Common";
 import { toastNotify } from "../../../../Helper";
+import { useSelector } from "react-redux";
+import { userInterface } from "../../../../Interfaces";
+import { RootState } from "../../../../Storage/Redux/store";
 
 interface Props {
   menuItem: menuItemInterface;
@@ -12,8 +15,16 @@ interface Props {
 function MenuItemCard(props: Props) {
   const [isAddingtoCart, setIsAddingToCart] = useState<boolean>(false);
   const [updateShoppingCart] = useUpdateShoppingCartMutation();
-
+  const userData: userInterface = useSelector(
+    (state: RootState) => state.userAuthStore
+  );
+  const navigate = useNavigate();
   const hadnleAddToCart = async (menuItemId: number) => {
+    if (!userData.id) {
+      navigate("/login");
+      return;
+    }
+
     setIsAddingToCart(true);
 
     const response = await updateShoppingCart({
