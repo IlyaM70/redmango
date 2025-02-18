@@ -9,8 +9,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "../Storage/Redux/store";
 import { userInterface } from "../Interfaces";
 
-//user id 4ab04538-5903-4a34-9964-3d69d98700ca
-
 function MenuItemDetails() {
   const { menuItemId } = useParams();
   const navigate = useNavigate();
@@ -41,7 +39,7 @@ function MenuItemDetails() {
     const response = await updateShoppingCart({
       menuItemId: menuItemId,
       updateQuantityBy: quantity,
-      userId: "4ab04538-5903-4a34-9964-3d69d98700ca",
+      userId: userData.id,
     });
     if (response.data && response.data.isSuccess) {
       toastNotify("Item added to cart");
