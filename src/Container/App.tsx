@@ -11,6 +11,7 @@ import {
   ShoppingCart,
   AuthenticationTest,
   AuthenticationTestAdmin,
+  Payment,
 } from "../Pages";
 import { Routes, Route } from "react-router-dom";
 import { useGetShoppingCartQuery } from "../Apis/shoppingCartApi";
@@ -37,7 +38,7 @@ function App() {
 
   useEffect(() => {
     if (!isLoading) {
-      //console.log(data.result);
+      console.log(data.result);
       dispatch(setShoppingCart(data.result?.cartItems));
     }
   }, [data]);
@@ -65,6 +66,7 @@ function App() {
           ></Route>
           <Route path="/accessDenied" element={<AccessDenied />}></Route>
           <Route path="*" element={<NotFound />}></Route>
+          <Route path="/payment" element={<Payment />}></Route>
         </Routes>
       </div>
       <Footer />
