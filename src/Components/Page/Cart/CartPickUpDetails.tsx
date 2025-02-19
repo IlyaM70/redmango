@@ -8,7 +8,7 @@ import { RootState } from "../../../Storage/Redux/store";
 import { useState } from "react";
 import { inputHelper } from "../../../Helper";
 import { MiniLoader } from "../Common";
-import { useInitialPaymentMutation } from "../../../Apis/paymentApi";
+import { useInitiatePaymentMutation } from "../../../Apis/paymentApi";
 import { useNavigate } from "react-router-dom";
 function CartPickUpDetails() {
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ function CartPickUpDetails() {
   const userData: userInterface = useSelector(
     (state: RootState) => state.userAuthStore
   );
-  const [initialPayment] = useInitialPaymentMutation();
+  const [initiatePayment] = useInitiatePaymentMutation();
   const navigate = useNavigate();
 
   let grandTotal = 0;
@@ -47,7 +47,7 @@ function CartPickUpDetails() {
     e.preventDefault();
     setLoading(true);
 
-    const { data }: apiResponseInterface = await initialPayment(userData.id);
+    const { data }: apiResponseInterface = await initiatePayment(userData.id);
     const orderSummary = { grandTotal, totalItems };
     console.log(data);
     navigate("/payment", {

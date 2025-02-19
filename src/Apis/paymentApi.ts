@@ -7,15 +7,15 @@ const paymentApi = createApi({
   }),
 
   endpoints: (builder) => ({
-    initialPayment: builder.mutation({
+    initiatePayment: builder.mutation({
       query: (userId) => ({
         url: "payment",
         method: "POST",
-        body: { userId },
+        params: { userId: userId },
       }),
     }),
   }),
 });
 
-export const { useInitialPaymentMutation } = paymentApi;
+export const { useInitiatePaymentMutation } = paymentApi;
 export default paymentApi;
