@@ -9,12 +9,14 @@ import { OrderSummaryInterface } from "../Order/OrderSummaryInterface";
 import { apiResponseInterface, cartItemInterface } from "../../../Interfaces";
 import { useCreateOrderMutation } from "../../../Apis/orderApi";
 import { SD_Status } from "../../../Utility/SD";
+import { useNavigate } from "react-router-dom";
 
 const PaymentForm = ({ data, userInput }: OrderSummaryInterface) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   const [createOrder] = useCreateOrderMutation();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -68,8 +70,18 @@ const PaymentForm = ({ data, userInput }: OrderSummaryInterface) => {
             : SD_Status.PENDING,
       });
 
-      console.log(response);
+      //console.log(response);
+      if (response) {
+        if (response.data?.result.status === SD_Status.CONFIRMED) {
+          navigate(
+            `order/orderConfirmed/${response.data.result.orderHeaderId}`
+          );
+        } else {
+          navigate("/failed");
+        }
+      }
     }
+    setIsProcessing(false);
   };
 
   return (
