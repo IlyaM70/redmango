@@ -1,13 +1,13 @@
 import menuItemInterface from "./menuItemInterface";
 import cartItemInterface from "./cartItemInterface";
-import shoppingCartModel from "./shoppingCartModel";
+import shoppingCartInterface from "./shoppingCartInterface";
 import userInterface from "./userInterface";
 import apiResponseInterface from "./apiResponseInterface";
 
 export type {
   menuItemInterface,
   cartItemInterface,
-  shoppingCartModel,
+  shoppingCartInterface,
   userInterface,
   apiResponseInterface,
 };

@@ -1,6 +1,6 @@
 import cartItemInterface from "./cartItemInterface";
 
-export default interface shoppingCartModel {
+export default interface shoppingCartInterface {
   id?: number;
   userId?: string;
   cartItems?: cartItemInterface[];
