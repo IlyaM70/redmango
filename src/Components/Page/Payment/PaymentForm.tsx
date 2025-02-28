@@ -5,11 +5,16 @@ import {
 } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import { toastNotify } from "../../../Helper";
+import { OrderSummaryInterface } from "../Order/OrderSummaryInterface";
+import { apiResponseInterface, cartItemInterface } from "../../../Interfaces";
+import { useCreateOrderMutation } from "../../../Apis/orderApi";
+import { SD_Status } from "../../../Utility/SD";
 
-const PaymentForm = () => {
+const PaymentForm = ({ data, userInput }: OrderSummaryInterface) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [createOrder] = useCreateOrderMutation();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,7 +37,38 @@ const PaymentForm = () => {
       toastNotify("An unexpected error ocurred.", "error");
       setIsProcessing(false);
     } else {
-      console.log(result);
+      //console.log(result);
+
+      let grandTotal = 0;
+      let totalItems = 0;
+      const orderDetailsDto: any = [];
+      data.cartItems.forEach((item: cartItemInterface) => {
+        const tempOrderDetail: any = {};
+        tempOrderDetail["menuItemId"] = item.menuItem?.id;
+        tempOrderDetail["quantity"] = item.quantity;
+        tempOrderDetail["itemName"] = item.menuItem?.name;
+        tempOrderDetail["price"] = item.menuItem?.price;
+        orderDetailsDto.push(tempOrderDetail);
+        grandTotal += item.quantity! * item.menuItem?.price!;
+        totalItems += item.quantity!;
+      });
+
+      const response: apiResponseInterface = await createOrder({
+        pickUpName: userInput.name,
+        pickUpPhoneNumber: userInput.phoneNumber,
+        pickUpEmail: userInput.email,
+        applicationUserId: data.userId,
+        orderTotal: grandTotal,
+        totalItems: totalItems,
+        orderDetailsDto: orderDetailsDto,
+        stripePaymentIntentId: data.stripePaymentIntent,
+        status:
+          result.paymentIntent.status === "succeeded"
+            ? SD_Status.CONFIRMED
+            : SD_Status.PENDING,
+      });
+
+      console.log(response);
     }
   };
 
