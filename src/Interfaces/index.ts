@@ -3,6 +3,8 @@ import cartItemInterface from "./cartItemInterface";
 import shoppingCartInterface from "./shoppingCartInterface";
 import userInterface from "./userInterface";
 import apiResponseInterface from "./apiResponseInterface";
+import orderDetailInterface from "./orderDetailInterface";
+import orderHeaderInterface from "./orderHeaderInterface";
 
 export type {
   menuItemInterface,
@@ -10,4 +12,6 @@ export type {
   shoppingCartInterface,
   userInterface,
   apiResponseInterface,
+  orderDetailInterface,
+  orderHeaderInterface,
 };
