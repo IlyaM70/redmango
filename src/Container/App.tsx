@@ -13,6 +13,7 @@ import {
   AuthenticationTestAdmin,
   Payment,
   OrderConfirmed,
+  MyOrders,
 } from "../Pages";
 import { Routes, Route } from "react-router-dom";
 import { useGetShoppingCartQuery } from "../Apis/shoppingCartApi";
@@ -69,6 +70,7 @@ function App() {
             path="/order/orderconfirmed/:id"
             element={<OrderConfirmed />}
           ></Route>
+          <Route path="/order/myOrders" element={<MyOrders />}></Route>
           <Route path="/payment" element={<Payment />}></Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
