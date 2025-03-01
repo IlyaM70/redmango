@@ -39,8 +39,6 @@ const PaymentForm = ({ data, userInput }: OrderSummaryInterface) => {
       toastNotify("An unexpected error ocurred.", "error");
       setIsProcessing(false);
     } else {
-      //console.log(result);
-
       let grandTotal = 0;
       let totalItems = 0;
       const orderDetailsDto: any = [];
@@ -70,7 +68,6 @@ const PaymentForm = ({ data, userInput }: OrderSummaryInterface) => {
             : SD_Status.PENDING,
       });
 
-      //console.log(response);
       if (response) {
         if (response.data?.result.status === SD_Status.CONFIRMED) {
           navigate(

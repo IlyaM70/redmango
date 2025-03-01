@@ -49,7 +49,6 @@ function CartPickUpDetails() {
 
     const { data }: apiResponseInterface = await initiatePayment(userData.id);
 
-    //console.log(data);
     navigate("/payment", {
       state: {
         apiResult: data?.result,
