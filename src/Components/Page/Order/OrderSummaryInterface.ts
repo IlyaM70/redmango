@@ -6,7 +6,7 @@ export interface OrderSummaryInterface {
     cartItems: shoppingCartInterface[];
     cartTotal: number;
     userId: string;
-    stripePaymentIntent: string;
+    stripePaymentIntentId: string;
   };
   userInput: {
     name: string;

@@ -63,7 +63,7 @@ const PaymentForm = ({ data, userInput }: OrderSummaryInterface) => {
         orderTotal: grandTotal,
         totalItems: totalItems,
         orderDetailsDto: orderDetailsDto,
-        stripePaymentIntentId: data.stripePaymentIntent,
+        stripePaymentIntentId: data.stripePaymentIntentId,
         status:
           result.paymentIntent.status === "succeeded"
             ? SD_Status.CONFIRMED
@@ -74,7 +74,7 @@ const PaymentForm = ({ data, userInput }: OrderSummaryInterface) => {
       if (response) {
         if (response.data?.result.status === SD_Status.CONFIRMED) {
           navigate(
-            `order/orderConfirmed/${response.data.result.orderHeaderId}`
+            `/order/orderconfirmed/${response.data.result.orderHeaderId}`
           );
         } else {
           navigate("/failed");
@@ -87,7 +87,14 @@ const PaymentForm = ({ data, userInput }: OrderSummaryInterface) => {
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement />
-      <button className="btn btn-success mt-5 w-100">Submit</button>
+      <button
+        disabled={!stripe || isProcessing}
+        className="btn btn-success mt-5 w-100"
+      >
+        <span id="button-text">
+          {isProcessing ? "Processing..." : "Submit Order"}
+        </span>
+      </button>
     </form>
   );
 };
