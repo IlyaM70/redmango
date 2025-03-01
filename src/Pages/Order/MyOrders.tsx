@@ -30,8 +30,8 @@ function MyOrders() {
               return (
                 <div className="row border" key={orderItem.orderHeaderId}>
                   <div className="col-1">{orderItem.orderHeaderId}</div>
-                  <div className="col-3">{orderItem.pickupName}</div>
-                  <div className="col-2">{orderItem.pickupPhoneNumber}</div>
+                  <div className="col-3">{orderItem.pickUpName}</div>
+                  <div className="col-2">{orderItem.pickUpPhoneNumber}</div>
                   <div className="col-1">
                     ${orderItem.orderTotal!.toFixed(2)}
                   </div>

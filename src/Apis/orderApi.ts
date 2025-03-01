@@ -17,6 +17,7 @@ const orderApi = createApi({
         },
         body: orderDetails,
       }),
+      invalidatesTags: ["Orders"],
     }),
     getAllOrders: builder.query({
       query: (userId) => ({

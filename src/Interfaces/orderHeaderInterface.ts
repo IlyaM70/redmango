@@ -2,8 +2,8 @@ import orderDetailInterface from "./orderDetailInterface";
 
 export default interface orderHeaderInterface {
   orderHeaderId?: number;
-  pickupName?: string;
-  pickupPhoneNumber?: string;
+  pickUpName?: string;
+  pickUpPhoneNumber?: string;
   pickupEmail?: string;
   applicationUserId?: string;
   user?: any;
