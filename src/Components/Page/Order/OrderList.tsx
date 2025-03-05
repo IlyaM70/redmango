@@ -1,8 +1,10 @@
 import orderListInterface from "./orderListInterface";
 import { MainLoader } from "../Common";
 import { orderHeaderInterface } from "../../../Interfaces";
+import { useNavigate } from "react-router-dom";
 
 function OrderList({ isLoading, orderData }: orderListInterface) {
+  const navigate = useNavigate();
   return (
     <>
       {" "}
@@ -34,7 +36,16 @@ function OrderList({ isLoading, orderData }: orderListInterface) {
                     {new Date(orderItem.orderDate!).toLocaleDateString()}
                   </div>
                   <div className="col-2">
-                    <button className="btn btn-success">Details</button>
+                    <button
+                      onClick={() => {
+                        navigate(
+                          "/order/orderDetails/" + orderItem.orderHeaderId
+                        );
+                      }}
+                      className="btn btn-success"
+                    >
+                      Details
+                    </button>
                   </div>
                 </div>
               );

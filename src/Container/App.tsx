@@ -14,6 +14,7 @@ import {
   Payment,
   OrderConfirmed,
   MyOrders,
+  OrderDetails,
 } from "../Pages";
 import { Routes, Route } from "react-router-dom";
 import { useGetShoppingCartQuery } from "../Apis/shoppingCartApi";
@@ -71,6 +72,10 @@ function App() {
             element={<OrderConfirmed />}
           ></Route>
           <Route path="/order/myOrders" element={<MyOrders />}></Route>
+          <Route
+            path="/order/orderDetails/:id"
+            element={<OrderDetails />}
+          ></Route>
           <Route path="/payment" element={<Payment />}></Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
