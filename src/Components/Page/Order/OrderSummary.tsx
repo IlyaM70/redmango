@@ -97,18 +97,23 @@ function OrderSummary({ data, userInput }: OrderSummaryInterface) {
             </button>
             {userData.role === SD_Roles.ADMIN && (
               <div className="d-flex">
-                <button
-                  className="btn btn-danger mx-2"
-                  onClick={() => handleCancel()}
-                >
-                  Cancel
-                </button>
-                <button
-                  className={`btn btn-${nextStatus.color} mx-2`}
-                  onClick={() => handleNextStatus()}
-                >
-                  {nextStatus.value}
-                </button>
+                {data.status! !== SD_Status.CANCELLED &&
+                  data.status! !== SD_Status.COMPLETED && (
+                    <button
+                      className="btn btn-danger mx-2"
+                      onClick={() => handleCancel()}
+                    >
+                      Cancel
+                    </button>
+                  )}
+                {data.status! !== SD_Status.COMPLETED && (
+                  <button
+                    className={`btn btn-${nextStatus.color} mx-2`}
+                    onClick={() => handleNextStatus()}
+                  >
+                    {nextStatus.value}
+                  </button>
+                )}
               </div>
             )}
           </div>
