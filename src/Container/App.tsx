@@ -16,6 +16,7 @@ import {
   MyOrders,
   OrderDetails,
   AllOrders,
+  MenuItemList,
 } from "../Pages";
 import { Routes, Route } from "react-router-dom";
 import { useGetShoppingCartQuery } from "../Apis/shoppingCartApi";
@@ -79,6 +80,10 @@ function App() {
           ></Route>
           <Route path="/order/allOrders" element={<AllOrders />}></Route>
           <Route path="/payment" element={<Payment />}></Route>
+          <Route
+            path="/menuitem/menuitemlist"
+            element={<MenuItemList />}
+          ></Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </div>
