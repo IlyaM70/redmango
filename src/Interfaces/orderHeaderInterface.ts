@@ -1,5 +1,5 @@
 import orderDetailInterface from "./orderDetailInterface";
-
+import { SD_Status } from "../Utility/SD";
 export default interface orderHeaderInterface {
   orderHeaderId?: number;
   pickUpName?: string;
@@ -10,7 +10,7 @@ export default interface orderHeaderInterface {
   orderTotal?: number;
   orderDate: Date;
   stripePaymentIntentId: string;
-  status: string;
+  status: (typeof SD_Status)[keyof typeof SD_Status];
   totalItems?: number;
   orderDetails?: orderDetailInterface[];
 }
