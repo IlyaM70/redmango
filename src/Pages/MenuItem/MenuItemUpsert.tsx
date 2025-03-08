@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { inputHelper } from "../../Helper";
+import { inputHelper, toastNotify } from "../../Helper";
 
 function MenuItemUpsert() {
   const menuItemData = {
@@ -10,6 +10,9 @@ function MenuItemUpsert() {
     price: 0,
   };
 
+  const [imageToStore, setImageToStore] = useState<any>();
+  const [imageToDisplay, setImageToDisplay] = useState<string>("");
+
   const [menuItemInputs, setMenuItemInputs] = useState(menuItemData);
   const handleMenuItemInput = (
     e: React.ChangeEvent<
@@ -18,6 +21,38 @@ function MenuItemUpsert() {
   ) => {
     const tempData = inputHelper(e, menuItemInputs);
     setMenuItemInputs(tempData);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const imgType = file.type.split("/")[1];
+      const validImgTypes = ["png", "jpeg", "jpg"];
+
+      const isImageTypeValid = validImgTypes.filter((e) => {
+        return e === imgType;
+      });
+
+      if (file.size > 1000 * 1024) {
+        setImageToStore("");
+        toastNotify("File must be less then 1 MB", "error");
+        return;
+      }
+
+      if (isImageTypeValid.length === 0) {
+        setImageToStore("");
+        toastNotify("File must be in jpeg, jpg or png format", "error");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      setImageToStore(file);
+      reader.onload = (e) => {
+        const imgUrl = e.target?.result as string;
+        setImageToDisplay(imgUrl);
+      };
+    }
   };
 
   return (
@@ -67,7 +102,11 @@ function MenuItemUpsert() {
               onChange={handleMenuItemInput}
               value={menuItemInputs.price}
             />
-            <input type="file" className="form-control mt-3" />
+            <input
+              type="file"
+              className="form-control mt-3"
+              onChange={handleFileChange}
+            />
             <div className="text-center">
               <button
                 type="submit"
@@ -80,7 +119,7 @@ function MenuItemUpsert() {
           </div>
           <div className="col-md-5 text-center">
             <img
-              src="https://picsum.photos/id/180/150/150?blur=1"
+              src={imageToDisplay}
               style={{ width: "100%", borderRadius: "30px" }}
               alt=""
             />
