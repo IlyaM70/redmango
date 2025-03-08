@@ -17,6 +17,7 @@ import {
   OrderDetails,
   AllOrders,
   MenuItemList,
+  MenuItemUpsert,
 } from "../Pages";
 import { Routes, Route } from "react-router-dom";
 import { useGetShoppingCartQuery } from "../Apis/shoppingCartApi";
@@ -83,6 +84,14 @@ function App() {
           <Route
             path="/menuitem/menuitemlist"
             element={<MenuItemList />}
+          ></Route>
+          <Route
+            path="/menuitem/menuitemupsert/:id"
+            element={<MenuItemUpsert />}
+          ></Route>
+          <Route
+            path="/menuitem/menuitemupsert"
+            element={<MenuItemUpsert />}
           ></Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
