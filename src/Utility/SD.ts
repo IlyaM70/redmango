@@ -11,3 +11,10 @@ export const SD_Status = {
   COMPLETED: "Completed",
   CANCELLED: "Cancelled",
 };
+
+export const SD_Categories = {
+  APPETIZER: "Appetizer",
+  ENTREE: "Entree",
+  DESSERT: "Dessert",
+  BEVERAGES: "Beverages",
+};
