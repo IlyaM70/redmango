@@ -5,7 +5,7 @@ import {
   userInterface,
 } from "../../../Interfaces";
 import { RootState } from "../../../Storage/Redux/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { inputHelper } from "../../../Helper";
 import { MiniLoader } from "../Common";
 import { useInitiatePaymentMutation } from "../../../Apis/paymentApi";
@@ -30,6 +30,14 @@ function CartPickUpDetails() {
     email: userData.email,
     phoneNumber: "",
   };
+
+  useEffect(() => {
+    setUserInput({
+      name: userData.fullName,
+      email: userData.email,
+      phoneNumber: "",
+    });
+  }, [userData]);
 
   shoppingCartFromStore.map((cartItem: cartItemInterface) => {
     totalItems += cartItem.quantity ?? 0;

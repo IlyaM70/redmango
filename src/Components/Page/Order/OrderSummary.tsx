@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { SD_Roles, SD_Status } from "../../../Utility/SD";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Storage/Redux/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUpdateOrderHeaderMutation } from "../../../Apis/orderApi";
 import { MainLoader } from "../Common";
 function OrderSummary({ data, userInput }: OrderSummaryInterface) {
@@ -44,6 +44,9 @@ function OrderSummary({ data, userInput }: OrderSummaryInterface) {
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    console.log(data.status);
+  }, [data.status]);
   return (
     <div>
       {loading && <MainLoader />}
@@ -93,12 +96,13 @@ function OrderSummary({ data, userInput }: OrderSummaryInterface) {
           </div>
           <div className="d-flex justify-content-between align-items-center mt-3">
             <button className="btn btn-secondary" onClick={() => navigate(-1)}>
-              Back to orders
+              Back
             </button>
             {userData.role === SD_Roles.ADMIN && (
               <div className="d-flex">
                 {data.status! !== SD_Status.CANCELLED &&
-                  data.status! !== SD_Status.COMPLETED && (
+                  data.status! !== SD_Status.COMPLETED &&
+                  data.status! && (
                     <button
                       className="btn btn-danger mx-2"
                       onClick={() => handleCancel()}
