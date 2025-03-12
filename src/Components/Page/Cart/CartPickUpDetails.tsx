@@ -10,6 +10,7 @@ import { inputHelper } from "../../../Helper";
 import { MiniLoader } from "../Common";
 import { useInitiatePaymentMutation } from "../../../Apis/paymentApi";
 import { useNavigate } from "react-router-dom";
+
 function CartPickUpDetails() {
   const [loading, setLoading] = useState(false);
   const shoppingCartFromStore: cartItemInterface[] = useSelector(

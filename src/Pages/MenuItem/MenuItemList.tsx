@@ -2,12 +2,18 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setMenuItem } from "../../Storage/Redux/menuItemSlice";
 import { MainLoader } from "../../Components/Page/Common";
-import { useGetMenuItemsQuery } from "../../Apis/menuItemApi";
+import {
+  useDeleteMenuItemMutation,
+  useGetMenuItemsQuery,
+} from "../../Apis/menuItemApi";
 import { menuItemInterface } from "../../Interfaces";
 import { useNavigate } from "react-router-dom";
+import { toastNotify } from "../../Helper";
+import { toast } from "react-toastify";
 
 function MenuItemList() {
   const { data, isLoading } = useGetMenuItemsQuery(null);
+  const [deleteMenuItem] = useDeleteMenuItemMutation();
   const dispath = useDispatch();
   const navigate = useNavigate();
 
@@ -16,6 +22,20 @@ function MenuItemList() {
       dispath(setMenuItem(data.result));
     }
   }, [isLoading]);
+
+  const handleDelete = async (id: number) => {
+    toast.promise(
+      deleteMenuItem(id),
+      {
+        pending: "Deleting Menu Item...",
+        error: "Error deleting Menu Item",
+        success: "Menu Item deleted successfully",
+      },
+      {
+        theme: "dark",
+      }
+    );
+  };
 
   if (isLoading) {
     return <MainLoader />;
@@ -66,7 +86,10 @@ function MenuItemList() {
                 >
                   <i className="bi bi-pencil-fill"></i>
                 </button>
-                <button className="btn btn-danger mx-2">
+                <button
+                  onClick={() => handleDelete(menuItem.id)}
+                  className="btn btn-danger mx-2"
+                >
                   <i className="bi bi-trash-fill"></i>
                 </button>
               </div>
