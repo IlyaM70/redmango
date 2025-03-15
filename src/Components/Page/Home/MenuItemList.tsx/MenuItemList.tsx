@@ -6,11 +6,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMenuItem } from "../../../../Storage/Redux/menuItemSlice";
 import { MainLoader } from "../../Common";
 import { RootState } from "../../../../Storage/Redux/store";
-
+import { SD_SortTypes } from "../../../../Utility/SD";
 function MenuItemList() {
   const [menuItems, setMenuItems] = useState<menuItemInterface[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [categoryList, setCategoryList] = useState([""]);
+  const [sortName, setSortName] = useState(SD_SortTypes.NAME_A_Z);
+  const sortOptions: Array<string> = [
+    SD_SortTypes.PRICE_LOW_HIGH,
+    SD_SortTypes.PRICE_HIGH_LOW,
+    SD_SortTypes.NAME_A_Z,
+    SD_SortTypes.NAME_Z_A,
+  ];
   const { data, isLoading } = useGetMenuItemsQuery(null);
   const dispath = useDispatch();
 
@@ -20,7 +27,11 @@ function MenuItemList() {
 
   useEffect(() => {
     if (data && data.result) {
-      const tempMenuItems = handleFilters(selectedCategory, searchValue);
+      const tempMenuItems = handleFilters(
+        sortName,
+        selectedCategory,
+        searchValue
+      );
       setMenuItems(tempMenuItems);
     }
   }, [searchValue]);
@@ -52,7 +63,7 @@ function MenuItemList() {
           localCategory = categoryList[index];
         }
         setSelectedCategory(localCategory);
-        const tempArray = handleFilters(localCategory, searchValue);
+        const tempArray = handleFilters(sortName, localCategory, searchValue);
         setMenuItems(tempArray);
       } else {
         button.classList.remove("active");
@@ -60,7 +71,21 @@ function MenuItemList() {
     });
   };
 
-  const handleFilters = (category: string, search: string) => {
+  const handleSortClick = (index: number) => {
+    setSortName(sortOptions[index]);
+    const tempArray = handleFilters(
+      sortOptions[index],
+      selectedCategory,
+      searchValue
+    );
+    setMenuItems(tempArray);
+  };
+
+  const handleFilters = (
+    sortType: string,
+    category: string,
+    search: string
+  ) => {
     let tempMenuItems =
       category === "All"
         ? [...data.result]
@@ -73,6 +98,29 @@ function MenuItemList() {
         (item: menuItemInterface) =>
           item.name.toUpperCase().includes(search.toUpperCase()) ||
           item.description.toUpperCase().includes(search.toUpperCase())
+      );
+    }
+
+    if (sortType === SD_SortTypes.PRICE_LOW_HIGH) {
+      tempMenuItems = tempMenuItems.sort(
+        (a: menuItemInterface, b: menuItemInterface) => a.price - b.price
+      );
+    }
+    if (sortType === SD_SortTypes.PRICE_HIGH_LOW) {
+      tempMenuItems = tempMenuItems.sort(
+        (a: menuItemInterface, b: menuItemInterface) => b.price - a.price
+      );
+    }
+    if (sortType === SD_SortTypes.NAME_A_Z) {
+      tempMenuItems = tempMenuItems.sort(
+        (a: menuItemInterface, b: menuItemInterface) =>
+          a.name.localeCompare(b.name)
+      );
+    }
+    if (sortType === SD_SortTypes.NAME_Z_A) {
+      tempMenuItems = tempMenuItems.sort(
+        (a: menuItemInterface, b: menuItemInterface) =>
+          b.name.localeCompare(a.name)
       );
     }
 
@@ -99,6 +147,28 @@ function MenuItemList() {
               </button>
             </li>
           ))}
+          <li className="nav-item dropdown" style={{ marginLeft: "auto" }}>
+            <div
+              className="nav-link dropdown-toggle text-dark fs-6 border"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {sortName}
+            </div>
+            <ul className="dropdown-menu">
+              {sortOptions.map((sortOption: string, index: number) => (
+                <li key={index}>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => handleSortClick(index)}
+                  >
+                    {sortOption}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </li>
         </ul>
       </div>
 
