@@ -1,6 +1,6 @@
 import "../index.css";
 import { Header, Footer } from "../Components/Layout";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   AccessDenied,
@@ -29,11 +29,14 @@ import { setLoggedInUser } from "../Storage/Redux/userAuthSlice";
 import { RootState } from "../Storage/Redux/store";
 
 function App() {
+  const dispatch = useDispatch();
+  const [skip, setSkip] = useState(true);
   const userData: userInterface = useSelector(
     (state: RootState) => state.userAuthStore
   );
-  const dispatch = useDispatch();
-  const { data, isLoading } = useGetShoppingCartQuery(userData.id);
+  const { data, isLoading } = useGetShoppingCartQuery(userData.id, {
+    skip: skip,
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -45,9 +48,15 @@ function App() {
 
   useEffect(() => {
     if (!isLoading) {
-      dispatch(setShoppingCart(data.result?.cartItems));
+      dispatch(setShoppingCart(data?.result?.cartItems));
     }
   }, [data]);
+
+  useEffect(() => {
+    if (userData.id) {
+      setSkip(false);
+    }
+  }, [userData]);
 
   return (
     <div className="">
