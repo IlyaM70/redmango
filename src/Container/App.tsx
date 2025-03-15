@@ -1,3 +1,4 @@
+import "../index.css";
 import { Header, Footer } from "../Components/Layout";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
