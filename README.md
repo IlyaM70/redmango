@@ -1,7 +1,9 @@
 
 # RedMango Restaurant Web Client
 
-**RedMango** is the web client for the RedMango API—a (https://github.com/IlyaM70) complete solution powering a restaurant website. This client provides a responsive and dynamic interface for browsing the menu, placing orders, processing payments, and managing the shopping cart.
+**RedMango** is the web client for the RedMango API (https://github.com/IlyaM70/RedMango_API) — a  complete solution powering a restaurant website. This client provides a responsive and dynamic interface for browsing the menu, placing orders, processing payments, and managing the shopping cart.
+
+Demo link: (https://redmango12.azurewebsites.net/)
 
 ## Overview
 
