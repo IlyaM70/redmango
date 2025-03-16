@@ -4,7 +4,7 @@ const menuItemApi = createApi({
   reducerPath: "menuItemApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://redmangoapi12.azurewebsites.net/api/",
-    prepareHeaders: (headers: Headers, api) => {
+    prepareHeaders: (headers: Headers) => {
       const token = localStorage.getItem("token");
       if (token) {
         headers.append("Authorization", `Bearer ${token}`);

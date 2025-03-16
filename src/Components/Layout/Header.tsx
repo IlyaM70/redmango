@@ -1,4 +1,3 @@
-import React from "react";
 import logo from "../../Assests/Images/mango.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { cartItemInterface, userInterface } from "../../Interfaces";

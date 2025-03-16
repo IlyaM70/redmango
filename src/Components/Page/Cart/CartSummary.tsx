@@ -6,7 +6,6 @@ import {
   updateQuantity,
 } from "../../../Storage/Redux/shoppingCartSlice";
 import { useUpdateShoppingCartMutation } from "../../../Apis/shoppingCartApi";
-import { menuItemApi } from "../../../Apis";
 
 function CartSummary() {
   const userData: userInterface = useSelector(

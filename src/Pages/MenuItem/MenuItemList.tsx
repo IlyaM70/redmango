@@ -8,7 +8,6 @@ import {
 } from "../../Apis/menuItemApi";
 import { menuItemInterface } from "../../Interfaces";
 import { useNavigate } from "react-router-dom";
-import { toastNotify } from "../../Helper";
 import { toast } from "react-toastify";
 
 function MenuItemList() {
