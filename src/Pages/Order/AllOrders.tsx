@@ -9,9 +9,16 @@ import { SD_Status } from "../../Utility/SD";
 import { orderHeaderInterface } from "../../Interfaces";
 
 function MyOrders() {
-  const { data, isLoading } = useGetAllOrdersQuery("");
-  const [orderData, setOrderData] = useState([]);
   const [filters, setFilters] = useState({ searchString: "", status: "" });
+  const [orderData, setOrderData] = useState([]);
+  const [apiFilters, setApiFilters] = useState({
+    searchString: "",
+    status: "",
+  });
+  const { data, isLoading } = useGetAllOrdersQuery({
+    ...(apiFilters.searchString && { searchString: apiFilters.searchString }),
+    ...(apiFilters.status && { status: apiFilters.status }),
+  });
   const filterOptions = [
     "All",
     SD_Status.PENDING,
@@ -30,31 +37,10 @@ function MyOrders() {
   };
 
   const handleFilters = () => {
-    const tempData = data.result.filter((orderData: orderHeaderInterface) => {
-      if (
-        (orderData.pickUpName &&
-          orderData.pickUpName.includes(filters.searchString)) ||
-        (orderData.pickUpEmail &&
-          orderData.pickUpEmail.includes(filters.searchString)) ||
-        (orderData.pickUpPhoneNumber &&
-          orderData.pickUpPhoneNumber.includes(filters.searchString))
-      ) {
-        return orderData;
-      }
+    setApiFilters({
+      searchString: filters.searchString,
+      status: filters.status,
     });
-
-    const finalArray = tempData.filter((orderData: orderHeaderInterface) => {
-      if (filters.status !== "") {
-        if (orderData.status === filters.status) {
-          return orderData;
-        }
-      }
-    });
-    if (finalArray.length > 0) {
-      setOrderData(finalArray);
-    } else {
-      setOrderData(tempData);
-    }
   };
 
   useEffect(() => {
