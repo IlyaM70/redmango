@@ -4,7 +4,7 @@ export default interface orderHeaderInterface {
   orderHeaderId?: number;
   pickUpName?: string;
   pickUpPhoneNumber?: string;
-  pickupEmail?: string;
+  pickUpEmail?: string;
   applicationUserId?: string;
   user?: any;
   orderTotal?: number;
