@@ -14,6 +14,7 @@ function MyOrders() {
     pageNumber: 1,
     pageSize: 5,
   });
+  const [currentPageSize, setCurrentPageSize] = useState(pageOptions.pageSize);
 
   const [apiFilters, setApiFilters] = useState({
     searchString: "",
@@ -68,7 +69,7 @@ function MyOrders() {
     } of ${totalRecords}`;
   };
 
-  function handlePaginationClick(direction: string) {
+  function handlePageOptionsChange(direction: string, pageSize?: number) {
     if (direction === "prev") {
       setPageOptions({
         ...pageOptions,
@@ -78,6 +79,11 @@ function MyOrders() {
       setPageOptions({
         ...pageOptions,
         pageNumber: pageOptions.pageNumber + 1,
+      });
+    } else if (direction === "change") {
+      setPageOptions({
+        ...pageOptions,
+        pageSize: pageSize ? pageSize : 5,
       });
     }
   }
@@ -118,11 +124,28 @@ function MyOrders() {
           </div>
           <OrderList isLoading={isLoading} orderData={orderData} />
           <div className="d-flex mx-5 justify-content-end align-items-center">
+            <div>Rows per page:</div>
+            <div>
+              <select
+                className="form-select mx-2"
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                  handlePageOptionsChange("change", Number(e.target.value));
+                  setCurrentPageSize(Number(e.target.value));
+                }}
+                style={{ width: "80px" }}
+              >
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+            </div>
             <div className="mx-2">{getPageDetails()}</div>
             <button
               disabled={pageOptions.pageNumber === 1}
               className="btn btn-outline-primary  px-3 mx-2"
-              onClick={() => handlePaginationClick("prev")}
+              onClick={() => handlePageOptionsChange("prev")}
             >
               <i className="bi bi-chevron-left"></i>
             </button>
@@ -132,7 +155,7 @@ function MyOrders() {
                 Math.ceil(totalRecords / pageOptions.pageSize)
               }
               className="btn btn-outline-primary  px-3 mx-2"
-              onClick={() => handlePaginationClick("next")}
+              onClick={() => handlePageOptionsChange("next")}
             >
               <i className="bi bi-chevron-right"></i>
             </button>
