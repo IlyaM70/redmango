@@ -4,21 +4,10 @@ import { RootState } from "../../Storage/Redux/store";
 import { useGetAllOrdersQuery } from "../../Apis/orderApi";
 import { OrderList } from "../../Components/Page/Order";
 import { MainLoader } from "../../Components/Page/Common";
-import { SD_Status } from "../../Utility/SD";
 
 function MyOrders() {
   const userId = useSelector((state: RootState) => state.userAuthStore.id);
   const { data, isLoading } = useGetAllOrdersQuery(userId);
-
-  const filterOptions = [
-    "All",
-    SD_Status.PENDING,
-    SD_Status.CONFIRMED,
-    SD_Status.BEING_COOKED,
-    SD_Status.READY_FOR_PICKUP,
-    SD_Status.COMPLETED,
-    SD_Status.CANCELLED,
-  ];
 
   return (
     <>
