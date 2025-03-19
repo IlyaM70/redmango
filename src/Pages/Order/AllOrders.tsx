@@ -1,23 +1,30 @@
 import { withAuth } from "../../HOC";
-
 import { useGetAllOrdersQuery } from "../../Apis/orderApi";
 import { OrderList } from "../../Components/Page/Order";
 import { MainLoader } from "../../Components/Page/Common";
 import { useEffect, useState } from "react";
 import { inputHelper } from "../../Helper";
 import { SD_Status } from "../../Utility/SD";
-import { orderHeaderInterface } from "../../Interfaces";
 
 function MyOrders() {
   const [filters, setFilters] = useState({ searchString: "", status: "" });
   const [orderData, setOrderData] = useState([]);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [pageOptions, setPageOptions] = useState({
+    pageNumber: 1,
+    pageSize: 5,
+  });
+
   const [apiFilters, setApiFilters] = useState({
     searchString: "",
     status: "",
   });
+
   const { data, isLoading } = useGetAllOrdersQuery({
     ...(apiFilters.searchString && { searchString: apiFilters.searchString }),
     ...(apiFilters.status && { status: apiFilters.status }),
+    ...(pageOptions.pageNumber && { pageNumber: pageOptions.pageNumber }),
+    ...(pageOptions.pageSize && { pageSize: pageOptions.pageSize }),
   });
   const filterOptions = [
     "All",
@@ -45,9 +52,35 @@ function MyOrders() {
 
   useEffect(() => {
     if (data) {
-      setOrderData(data.result);
+      setOrderData(data.apiResponse.result);
+      const { TotalRecords } = JSON.parse(data.totalRecords);
+      setTotalRecords(TotalRecords);
     }
   }, [data]);
+
+  const getPageDetails = () => {
+    const dataStartNumber =
+      (pageOptions.pageNumber - 1) * pageOptions.pageSize + 1;
+    const dataEndNumber = pageOptions.pageNumber * pageOptions.pageSize;
+
+    return `${dataStartNumber}-${
+      dataEndNumber < totalRecords ? dataEndNumber : totalRecords
+    } of ${totalRecords}`;
+  };
+
+  function handlePaginationClick(direction: string) {
+    if (direction === "prev") {
+      setPageOptions({
+        ...pageOptions,
+        pageNumber: pageOptions.pageNumber - 1,
+      });
+    } else if (direction === "next") {
+      setPageOptions({
+        ...pageOptions,
+        pageNumber: pageOptions.pageNumber + 1,
+      });
+    }
+  }
 
   return (
     <>
@@ -84,6 +117,26 @@ function MyOrders() {
             </div>
           </div>
           <OrderList isLoading={isLoading} orderData={orderData} />
+          <div className="d-flex mx-5 justify-content-end align-items-center">
+            <div className="mx-2">{getPageDetails()}</div>
+            <button
+              disabled={pageOptions.pageNumber === 1}
+              className="btn btn-outline-primary  px-3 mx-2"
+              onClick={() => handlePaginationClick("prev")}
+            >
+              <i className="bi bi-chevron-left"></i>
+            </button>
+            <button
+              disabled={
+                pageOptions.pageNumber ===
+                Math.ceil(totalRecords / pageOptions.pageSize)
+              }
+              className="btn btn-outline-primary  px-3 mx-2"
+              onClick={() => handlePaginationClick("next")}
+            >
+              <i className="bi bi-chevron-right"></i>
+            </button>
+          </div>
         </>
       )}
     </>
